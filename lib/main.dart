@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './question.dart';
+import './answer.dart';
 
 void main() => runApp(MyApp());
 
@@ -11,42 +12,38 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  var questions = [
+    'What\'s your favorite color',
+    'What\'s your favorite Animal'
+  ];
+  var _questionsIndex = 0;
+
+  void _questionHandler() {
+    setState(() {
+      if (_questionsIndex == questions.length - 1) {
+        _questionsIndex = 0;
+      } else {
+        _questionsIndex++;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    var _questionIndex = 0;
-
-    var questions = [
-      'What\'s your favorite color?',
-      'What\'s your favorite animal?'
-    ];
-
-    void answerQuestion() {
-      setState(() => (_questionIndex = _questionIndex + 1));
-      print(_questionIndex);
-    }
-
     return MaterialApp(
       home: Scaffold(
-          appBar: AppBar(
-            title: Text('My First App'),
-          ),
-          body: Column(
-            children: [
-              Question(questions[_questionIndex]),
-              ElevatedButton(
-                child: Text('Answer 1'),
-                onPressed: answerQuestion,
-              ),
-              ElevatedButton(
-                child: Text('Answer 2'),
-                onPressed: answerQuestion,
-              ),
-              ElevatedButton(
-                child: Text('Answer 3'),
-                onPressed: answerQuestion,
-              )
-            ],
-          )),
+        appBar: AppBar(
+          title: Text("My First App"),
+        ),
+        body: Column(
+          children: [
+            Question(questions[_questionsIndex]),
+            Answer(_questionHandler, 'Button 1'),
+            Answer(_questionHandler, 'Button 2'),
+            Answer(_questionHandler, 'Button 3')
+          ],
+        ),
+      ),
     );
   }
 }
